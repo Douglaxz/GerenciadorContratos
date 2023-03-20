@@ -10,14 +10,17 @@ app.app_context().push()
 db.create_all()
 from sqlalchemy import func
 from models import tb_user,\
-    tb_usertype
+    tb_usertype,\
+    tb_clientes
 from helpers import \
     frm_pesquisa, \
     frm_editar_senha,\
     frm_editar_usuario,\
     frm_visualizar_usuario, \
     frm_visualizar_tipousuario,\
-    frm_editar_tipousuario
+    frm_editar_tipousuario,\
+    frm_visualizar_cliente,\
+    frm_editar_cliente
 
 # ITENS POR PÁGINA
 from config import ROWS_PER_PAGE, CHAVE
@@ -445,4 +448,128 @@ def atualizarTipoUsuario():
     else:
         flash('Favor verificar os campos!','danger')
     return redirect(url_for('visualizarTipoUsuario', id=request.form['id']))
+
+
+##################################################################################################################################
+#CLIENTES
+##################################################################################################################################
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#ROTA: cliente
+#FUNÇÃO: listar
+#PODE ACESSAR: administrador
+#---------------------------------------------------------------------------------------------------------------------------------
+@app.route('/cliente', methods=['POST','GET'])
+def tipousuario():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        flash('Sessão expirou, favor logar novamente','danger')
+        return redirect(url_for('login',proxima=url_for('cliente')))         
+    page = request.args.get('page', 1, type=int)
+    form = frm_pesquisa()   
+    pesquisa = form.pesquisa.data
+    if pesquisa == "":
+        pesquisa = form.pesquisa_responsiva.data
+    
+    if pesquisa == "" or pesquisa == None:     
+        clientes = tb_clientes.query.order_by(tb_clientes.desc_usertype)\
+        .paginate(page=page, per_page=ROWS_PER_PAGE , error_out=False)
+    else:
+        clientes = tb_clientes.query.order_by(tb_clientes.desc_usertype)\
+        .filter(tb_clientes.desc_usertype.ilike(f'%{pesquisa}%'))\
+        .paginate(page=page, per_page=ROWS_PER_PAGE, error_out=False)        
+    return render_template('tipousuarios.html', titulo='Clientes', clientes=clientes, form=form)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#ROTA: novoCliente
+#FUNÇÃO: formulario de inclusão
+#PODE ACESSAR: administrador
+#---------------------------------------------------------------------------------------------------------------------------------
+@app.route('/novoCliente')
+def novoCliente():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        flash('Sessão expirou, favor logar novamente','danger')
+        return redirect(url_for('login',proxima=url_for('novoCliente'))) 
+    form = frm_editar_tipousuario()
+    return render_template('novoCliente.html', titulo='Novo Cliente', form=form)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#ROTA: criarCliente
+#FUNÇÃO: inclusão no banco de dados
+#PODE ACESSAR: administrador
+#--------------------------------------------------------------------------------------------------------------------------------- 
+@app.route('/criarCliente', methods=['POST',])
+def criarCliente():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        flash('Sessão expirou, favor logar novamente','danger')
+        return redirect(url_for('login',proxima=url_for('criarCliente')))     
+    form = frm_editar_cliente(request.form)
+    if not form.validate_on_submit():
+        flash('Por favor, preencha todos os dados','danger')
+        return redirect(url_for('criarCliente'))
+    desc  = form.descricao.data
+    status = form.status.data
+    cliente = tb_clientes.query.filter_by(cnpj_cliente=desc).first()
+    if cliente:
+        flash ('Cliente já existe','danger')
+        return redirect(url_for('cliente')) 
+    novoCliente = tb_usertype(razaocliente_cliente=desc, status_usertype=status)
+    flash('Cliente criado com sucesso!','success')
+    db.session.add(novoCliente)
+    db.session.commit()
+    return redirect(url_for('cliente'))
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#ROTA: visualizarCliente
+#FUNÇÃO: formulario de visualização
+#PODE ACESSAR: administrador
+#--------------------------------------------------------------------------------------------------------------------------------- 
+@app.route('/visualizarCliente/<int:id>')
+def visualizarCliente(id):
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        flash('Sessão expirou, favor logar novamente','danger')
+        return redirect(url_for('login',proxima=url_for('visualizarCliente')))  
+    cliente = tb_cliente.query.filter_by(cod_cliente=id).first()
+    form = frm_visualizar_cliente()
+    form.razaocliente.data = cliente.desc_cliente
+    form.status.data = cliente.status_cliente
+    return render_template('visualizarCliente.html', titulo='Visualizar Cliente', id=id, form=form)   
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#ROTA: editarCliente
+##FUNÇÃO: formulário de edição
+#PODE ACESSAR: administrador
+#---------------------------------------------------------------------------------------------------------------------------------
+@app.route('/editarCliente/<int:id>')
+def editarCliente(id):
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        flash('Sessão expirou, favor logar novamente','danger')
+        return redirect(url_for('login',proxima=url_for('editarCliente')))  
+    cliente = tb_clientes.query.filter_by(cod_usertype=id).first()
+    form = frm_editar_cliente()
+    form.descricao.data = cliente.razao_cliente
+    form.status.data = cliente.status_usertype
+    return render_template('editarCliente.html', titulo='Editar Cliente', id=id, form=form)   
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#ROTA: atualizarCliente
+#FUNÇÃO: alterar informações no banco de dados
+#PODE ACESSAR: administrador
+#---------------------------------------------------------------------------------------------------------------------------------
+@app.route('/atualizarCliente', methods=['POST',])
+def atualizarCliente():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        flash('Sessão expirou, favor logar novamente','danger')
+        return redirect(url_for('login',proxima=url_for('atualizarCliente')))      
+    form = frm_editar_cliente(request.form)
+    if form.validate_on_submit():
+        id = request.form['id']
+        cliente = tb_usertype.query.filter_by(cod_cliete=request.form['id']).first()
+        cliente.desc_cliente = form.descricao.data
+        cliente.status_cliente= form.status.data
+        db.session.add(cliente)
+        db.session.commit()
+        flash('Tipo de usuário atualizado com sucesso!','success')
+    else:
+        flash('Favor verificar os campos!','danger')
+    return redirect(url_for('visualizarCliente', id=request.form['id']))
 
