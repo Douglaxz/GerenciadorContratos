@@ -28,7 +28,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-default">
       <div class="container-fluid p-4">
-        <img src="{{ url_for('static', filename = 'logobranco.png') }}">
+        <i class="bi bi-file-earmark-text" style="font-size:1.5rem; color:white;"></i><font color="white">Gerenciador de Contratos</font>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -39,8 +39,8 @@
                 <font color="white">Configurações</font>
               </a>
               <ul class="dropdown-menu">
-                <li><button type="button" class="btn bi bi-nut" onclick="window.location.href = '/tiposervico'">Tipo Serviços</button></li>
-                <li><button type="button" class="btn bi bi-hand-index" onclick="window.location.href = '/tiposolicitacao'">Tipo Solicitação</button></li>
+                
+                
                 <li><button type="button" class="btn bi bi-people" onclick="window.location.href = '/tipousuario'">Tipos Usuário</button></li>
                 <li></li>
               </ul>
@@ -50,7 +50,7 @@
                 <font color="white">Cadastro</font>
               </a>
               <ul class="dropdown-menu">
-                <li><button type="button" class="btn bi bi-bricks" onclick="window.location.href = '/solicitacao'">Solicitação</button></li>
+                <li><button type="button" class="btn bi bi-person-workspace" onclick="window.location.href = '/cliente'">Clientes</button></li>
                 <li><button type="button" class="btn bi bi-person" onclick="window.location.href = '/usuario'">Usuários</button></li>
               </ul>
             </li>                               

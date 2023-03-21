@@ -460,7 +460,7 @@ def atualizarTipoUsuario():
 #PODE ACESSAR: administrador
 #---------------------------------------------------------------------------------------------------------------------------------
 @app.route('/cliente', methods=['POST','GET'])
-def tipousuario():
+def cliente():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         flash('Sessão expirou, favor logar novamente','danger')
         return redirect(url_for('login',proxima=url_for('cliente')))         
@@ -471,13 +471,13 @@ def tipousuario():
         pesquisa = form.pesquisa_responsiva.data
     
     if pesquisa == "" or pesquisa == None:     
-        clientes = tb_clientes.query.order_by(tb_clientes.desc_usertype)\
+        clientes = tb_clientes.query.order_by(tb_clientes.nomerazao_cliente)\
         .paginate(page=page, per_page=ROWS_PER_PAGE , error_out=False)
     else:
-        clientes = tb_clientes.query.order_by(tb_clientes.desc_usertype)\
-        .filter(tb_clientes.desc_usertype.ilike(f'%{pesquisa}%'))\
+        clientes = tb_clientes.query.order_by(tb_clientes.nomerazao_cliente)\
+        .filter(tb_clientes.nomerazao_cliente.ilike(f'%{pesquisa}%'))\
         .paginate(page=page, per_page=ROWS_PER_PAGE, error_out=False)        
-    return render_template('tipousuarios.html', titulo='Clientes', clientes=clientes, form=form)
+    return render_template('cliente.html', titulo='Clientes', clientes=clientes, form=form)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 #ROTA: novoCliente
@@ -489,7 +489,7 @@ def novoCliente():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         flash('Sessão expirou, favor logar novamente','danger')
         return redirect(url_for('login',proxima=url_for('novoCliente'))) 
-    form = frm_editar_tipousuario()
+    form = frm_editar_cliente()
     return render_template('novoCliente.html', titulo='Novo Cliente', form=form)
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -506,13 +506,30 @@ def criarCliente():
     if not form.validate_on_submit():
         flash('Por favor, preencha todos os dados','danger')
         return redirect(url_for('criarCliente'))
-    desc  = form.descricao.data
+    nomerazao_cliente  = form.nomerazao_cliente.data
+    nomefantasia_cliente = form.nomefantasia_cliente.data
+    end_cliente = form.end_cliente.data
+    numend_cliente = form.numend_cliente.data
+    bairro_cliente = form.bairro_cliente.data
+    cidade_cliente = form.cidade_cliente.data
+    uf_cliente = form.uf_cliente.data
+    complemento_cliente = form.complemento_cliente.data
+    cnpj_cliente = form.nomerazao_cliente.data
     status = form.status.data
-    cliente = tb_clientes.query.filter_by(cnpj_cliente=desc).first()
+    cliente = tb_clientes.query.filter_by(cnpj_cliente=cnpj_cliente).first()
     if cliente:
         flash ('Cliente já existe','danger')
         return redirect(url_for('cliente')) 
-    novoCliente = tb_usertype(razaocliente_cliente=desc, status_usertype=status)
+    novoCliente = tb_clientes(nomerazao_cliente=nomerazao_cliente,\
+                            nomefantasia_cliente = nomefantasia_cliente,\
+                            end_cliente = end_cliente,\
+                            numend_cliente = numend_cliente,\
+                            bairro_cliente = bairro_cliente,\
+                            cidade_cliente = cidade_cliente,\
+                            uf_cliente = uf_cliente,\
+                            complemento_cliente = complemento_cliente,\
+                            cnpj_cliente = cnpj_cliente,\
+                            status_cliente=status)
     flash('Cliente criado com sucesso!','success')
     db.session.add(novoCliente)
     db.session.commit()
@@ -528,9 +545,17 @@ def visualizarCliente(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         flash('Sessão expirou, favor logar novamente','danger')
         return redirect(url_for('login',proxima=url_for('visualizarCliente')))  
-    cliente = tb_cliente.query.filter_by(cod_cliente=id).first()
+    cliente = tb_clientes.query.filter_by(cod_cliente=id).first()
     form = frm_visualizar_cliente()
-    form.razaocliente.data = cliente.desc_cliente
+    form.nomerazao_cliente.data = cliente.nomerazao_cliente
+    form.nomefantasia_cliente.data = cliente.nomefantasia_cliente
+    form.end_cliente.data = cliente.end_cliente
+    form.numend_cliente.data = cliente.numend_cliente
+    form.bairro_cliente.data = cliente.bairro_cliente
+    form.cidade_cliente.data = cliente.cidade_cliente
+    form.uf_cliente.data = cliente.uf_cliente
+    form.complemento_cliente.data = cliente.complemento_cliente
+    form.cnpj_cliente.data = cliente.cnpj_cliente
     form.status.data = cliente.status_cliente
     return render_template('visualizarCliente.html', titulo='Visualizar Cliente', id=id, form=form)   
 
@@ -544,10 +569,18 @@ def editarCliente(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         flash('Sessão expirou, favor logar novamente','danger')
         return redirect(url_for('login',proxima=url_for('editarCliente')))  
-    cliente = tb_clientes.query.filter_by(cod_usertype=id).first()
+    cliente = tb_clientes.query.filter_by(cod_cliente=id).first()
     form = frm_editar_cliente()
-    form.descricao.data = cliente.razao_cliente
-    form.status.data = cliente.status_usertype
+    form.nomerazao_cliente.data = cliente.nomerazao_cliente
+    form.nomefantasia_cliente.data = cliente.nomefantasia_cliente
+    form.end_cliente.data = cliente.end_cliente
+    form.numend_cliente.data = cliente.numend_cliente
+    form.bairro_cliente.data = cliente.bairro_cliente
+    form.cidade_cliente.data = cliente.cidade_cliente
+    form.uf_cliente.data = cliente.uf_cliente
+    form.complemento_cliente.data = cliente.complemento_cliente
+    form.cnpj_cliente.data = cliente.cnpj_cliente
+    form.status.data = cliente.status_cliente
     return render_template('editarCliente.html', titulo='Editar Cliente', id=id, form=form)   
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -563,12 +596,20 @@ def atualizarCliente():
     form = frm_editar_cliente(request.form)
     if form.validate_on_submit():
         id = request.form['id']
-        cliente = tb_usertype.query.filter_by(cod_cliete=request.form['id']).first()
-        cliente.desc_cliente = form.descricao.data
-        cliente.status_cliente= form.status.data
+        cliente = tb_clientes.query.filter_by(cod_cliente=request.form['id']).first()
+        cliente.nomerazao_cliente = form.nomerazao_cliente.data
+        cliente.nomefantasia_cliente = form.nomefantasia_cliente.data
+        cliente.end_cliente = form.end_cliente.data
+        cliente.numend_cliente = form.numend_cliente.data
+        cliente.bairro_cliente = form.bairro_cliente.data
+        cliente.cidade_cliente = form.cidade_cliente.data
+        cliente.uf_cliente = form.uf_cliente.data
+        cliente.complemento_cliente = form.complemento_cliente.data
+        cliente.cnpj_cliente = form.cnpj_cliente.data
+        cliente.status_cliente = form.status.data
         db.session.add(cliente)
         db.session.commit()
-        flash('Tipo de usuário atualizado com sucesso!','success')
+        flash('Cliente atualizado com sucesso!','success')
     else:
         flash('Favor verificar os campos!','danger')
     return redirect(url_for('visualizarCliente', id=request.form['id']))
