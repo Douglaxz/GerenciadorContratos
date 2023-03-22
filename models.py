@@ -45,3 +45,41 @@ class tb_clientes(db.Model):
     status_cliente = db.Column(db.Integer, nullable=False)
     def __repr__(self):
         return '<Name %r>' % self.name    
+
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#TABELA: CONTRATOS
+#ORIGEM: BANCO DE DADOS
+#---------------------------------------------------------------------------------------------------------------------------------
+class tb_contratos(db.Model):
+    cod_contrato = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cod_cliente = db.Column(db.Integer, nullable=False)
+    obj_contrato = db.Column(db.String(50), nullable=False)
+    datavalidade_contrato = db.Column(db.Date, nullable=False)
+    status_contrato = db.Column(db.Integer, nullable=False)
+    def __repr__(self):
+        return '<Name %r>' % self.name
+    
+#---------------------------------------------------------------------------------------------------------------------------------
+#TABELA: CONTRATOS_ARQUIVOS
+#ORIGEM: BANCO DE DADOS
+#---------------------------------------------------------------------------------------------------------------------------------
+class tb_contrato_arquivos(db.Model):
+    cod_contrato_arquivo = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cod_contrato = db.Column(db.Integer, nullable=False)
+    arquivo_contrato_arquivo = db.Column(db.String(50), nullable=False)
+    def __repr__(self):
+        return '<Name %r>' % self.name    
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#TABELA: CONTRATOS_ARQUIVOS
+#ORIGEM: BANCO DE DADOS
+#---------------------------------------------------------------------------------------------------------------------------------
+class tb_aditivos(db.Model):
+    cod_aditivo = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cod_contrato = db.Column(db.Integer, nullable=False)
+    desc_aditivo = db.Column(db.String(50), nullable=False)
+    data_aditivo = db.Column(db.Date, nullable=False)
+    status_aditivo = db.Column(db.Integer, nullable=False)
+    def __repr__(self):
+        return '<Name %r>' % self.name
