@@ -164,4 +164,30 @@ class frm_visualizar_contrato(FlaskForm):
 #---------------------------------------------------------------------------------------------------------------------------------
 class frm_editar_contrato_arquivo(FlaskForm):
     arquivo_contrato_arquivo = FileField('Arquivo:', [validators.DataRequired()], render_kw={"placeholder": "selecionar imagem"})
-    salvar = SubmitField('Salvar')  
+    salvar = SubmitField('Salvar')
+
+##################################################################################################################################
+#ADITIVOS
+##################################################################################################################################
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#FORMUÁRIO: aditivo
+#TIPO: edição
+#TABELA: tb_aditivos
+#---------------------------------------------------------------------------------------------------------------------------------
+class frm_editar_aditivo(FlaskForm):
+    desc_aditivo = StringField('Objeto:', [validators.DataRequired(), validators.Length(min=1, max=50)], render_kw={"placeholder": "digite o descritivo do aditivo"})
+    data_aditivo = DateField('Data:', render_kw={"placeholder": "digite a data do aditivo"})
+    status_aditivo = SelectField('Situação:', coerce=int, choices=[(0, 'Ativo'),(1, 'Inativo')])
+    salvar = SubmitField('Salvar')    
+
+#---------------------------------------------------------------------------------------------------------------------------------
+#FORMUÁRIO: aditivo
+#TIPO: visualização
+#TABELA: tb_aditivos
+#---------------------------------------------------------------------------------------------------------------------------------
+class frm_visualizar_aditivo(FlaskForm):
+    desc_aditivo = StringField('Objeto:', [validators.DataRequired(), validators.Length(min=1, max=50)], render_kw={'readonly': True})
+    data_aditivo = DateField('Data:', render_kw={'readonly': True})
+    status_aditivo = SelectField('Situação:', coerce=int, choices=[(0, 'Ativo'),(1, 'Inativo')], render_kw={'readonly': True})
+    salvar = SubmitField('Salvar')
