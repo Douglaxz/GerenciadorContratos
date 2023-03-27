@@ -1,17 +1,18 @@
- # Gerenciador de reclamações e solicitações de munícipes - Cidade Participativa
+ # Gerenciador de contratos e aditivos
 
  ## :computer: Descrição do projeto:
-Bem-vindo ao Cidade Participativa!
+Bem-vindo ao nosso projeto de Gerenciador de Documentos!
 
-Este é um sistema de ouvidoria desenvolvido para gerenciar as solicitações dos moradores de uma cidade. Com o Cidade Participativa, é possível enviar reclamações, sugestões e elogios diretamente para a administração municipal, de forma ágil e eficiente.
+Este projeto tem como objetivo ajudar você a gerenciar seus contratos e outros documentos importantes, mantendo tudo em um só lugar e sempre acessível. Com ele, você poderá acompanhar as datas de vencimento e renovação de seus contratos, fazer upload e armazenar seus arquivos, além de manter um registro de todas as atividades relacionadas a cada documento.
 
-Uma das principais características do Cidade Participativa é a possibilidade de anexar fotos para comprovar o problema relatado. Isso ajuda a acelerar o processo de resolução, já que a equipe responsável pode avaliar a situação com mais clareza e precisão.
+Para começar, basta se cadastrar e criar uma conta. Depois, você poderá adicionar seus documentos e definir suas informações, como data de vencimento, tipo de documento, entre outras. O sistema irá alertá-lo automaticamente quando uma data de vencimento se aproximar, garantindo que você nunca perca um prazo importante.
 
-Além disso, o sistema oferece diversas funcionalidades para otimizar o trabalho da equipe de ouvidoria. É possível gerenciar as solicitações recebidas, priorizando os casos mais urgentes, e registrar as ações tomadas para resolver cada problema. Tudo isso de forma integrada e organizada, para garantir um atendimento eficiente aos moradores da cidade.
+Além disso, nosso Gerenciador de Documentos possui uma interface amigável e intuitiva, facilitando a navegação e a busca por informações. Você poderá anexar arquivos a cada documento, como cópias de contratos e outros documentos relacionados, e acessá-los a qualquer momento.
 
-O Cidade Participativa é uma ferramenta importante para promover a participação cidadã e a transparência na gestão pública. Ao enviar sua solicitação pelo sistema, você ajuda a identificar os problemas e as demandas mais urgentes da cidade, contribuindo para a construção de uma cidade mais justa e colaborativa.
+Acreditamos que este projeto irá ajudá-lo a gerenciar seus documentos de forma mais eficaz e eficiente, economizando seu tempo e reduzindo o risco de perda ou esquecimento de informações importantes. Estamos sempre abertos a feedbacks e sugestões para melhorias contínuas.
 
-Agradecemos por utilizar o Cidade Participativa e esperamos que essa ferramenta ajude a melhorar a sua experiência como morador da cidade.
+Obrigado por utilizar nosso Gerenciador de Documentos e esperamos que ele seja útil em seu dia a dia!
+
 
 ## :video_camera: Amostra do projeto:
 em desenvolvimento
@@ -61,12 +62,10 @@ Para começar, verifique a instalação dos seguintes itens:
 - [X] Funcionalidade template
 - [X] Funcionalidade usuário
 - [X] Funcionalidade tipo de usuário
-- [X] Funcionalidade cadastro de tipos de solicitação
-- [X] Funcionalidade cadastro de tipos serviço
-- [X] Funcionalidade cadastro de solicitações (que podem ser reclamações, elogios eou solicitações)
-- [X] Funcionalidade anexar fotos
-- [X] Funcionalidade google maps
-- [X] Funcionalidade finalizar a solicitação
+- [X] Funcionalidade cadastro contratos
+- [X] Funcionalidade cadastro de aditivos
+- [X] Funcionalidade anexar arquivos
+- [X] Funcionalidade api consulta cnpj
 
 
 ## :paperclips: Colaborando:

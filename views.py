@@ -888,7 +888,7 @@ def editarAditivo(id):
     return render_template('editarAditivo.html', titulo='Editar Aditivo', id=id, form=form)   
 
 #---------------------------------------------------------------------------------------------------------------------------------
-#ROTA: atualizarAditivo 1
+#ROTA: atualizarAditivo
 #FUNÇÃO: alterar informações no banco de dados
 #PODE ACESSAR: administrador
 #---------------------------------------------------------------------------------------------------------------------------------
