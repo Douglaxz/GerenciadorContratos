@@ -15,7 +15,8 @@ Obrigado por utilizar nosso Gerenciador de Documentos e esperamos que ele seja �
 
 
 ## :video_camera: Amostra do projeto:
-em desenvolvimento
+[<img src="https://github.com/Douglaxz/gerenciadorcontratos/blob/main/miniatura.png" width="100%">](https://youtu.be/CJr5VnF751o "Gerenciador de Contratos")
+
 
 ## :rocket: Começando:
 Essas instruções permitirão que você obtenha uma cópia do projeto em operação na sua máquina local para fins de desenvolvimento e teste.
